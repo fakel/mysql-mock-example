@@ -42,3 +42,13 @@ const selectFromTable = () => con.connect((err) => {
     console.log(result);
   });
 });
+
+const closeConnection = () => con.end();
+
+module.exports = {
+  createDb,
+  createTable,
+  insterInTable,
+  selectFromTable,
+  closeConnection,
+};
