@@ -27,6 +27,8 @@ describe('mySQL', () => {
     expect.hasAssertions();
     queryStub.callsFake((query, cb) => {
       expect(query).toBe('CREATE DATABASE mydb');
+      // Este callback es el que se espera sea llamado en cada query
+      // aqui podemos retornar cualquier información que deseamos
       cb();
       done();
     });
