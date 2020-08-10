@@ -1,8 +1,5 @@
 const mysql = require('mysql');
 const sinon = require('sinon');
-const { describe } = require('yargs');
-const { italic } = require('chalk');
-
 const mock = mock = sinon.mock(require('mysql'));
 
 describe('mySQL', () => {
