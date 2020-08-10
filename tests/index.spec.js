@@ -5,31 +5,60 @@
 const sinon = require('sinon');
 const mockMysql = sinon.mock(require('mysql'));
 
-const myStub = sinon.stub();
+const connectStub = sinon.stub().callsFake((cb) => {
+  console.log('connected');
+  cb();
+});
+const queryStub = sinon.stub();
+const endStub = sinon.stub();
 
 mockMysql.expects('createConnection').returns({
-  connect: (cb) => {
-    console.log('Connection Mocked');
-    cb();
-  },
-  query: myStub,
-  end: () => {
-    console.log('Connection ended');
-  },
+  connect: connectStub,
+  query: queryStub,
+  end: endStub,
 });
 
 const db = require('../index');
 
 describe('mySQL', () => {
+  it('should create a db', (done) => {
+    queryStub.callsFake((query, cb) => {
+      console.log(query);
+      cb();
+      done();
+    });
+    db.createDb();
+  });
+
   it('should create a table', (done) => {
-    myStub.callsFake((query, cb) => {
+    queryStub.callsFake((query, cb) => {
       console.log(query);
       cb();
       done();
     });
     db.createTable();
   });
-  it.todo('should insert into a table');
-  it.todo('should select from a table');
-  it.todo('should close the connection');
+  it('should insert into a table', (done) => {
+    queryStub.callsFake((query, cb) => {
+      console.log(query);
+      cb();
+      done();
+    });
+    db.insterInTable();
+  });
+  it('should select from a table', (done) => {
+    queryStub.callsFake((query, cb) => {
+      console.log(query);
+      cb(null, 'test result');
+      done();
+    });
+    db.selectFromTable();
+  });
+  it('should close the connection', (done) => {
+    endStub.callsFake(() => {
+      console.log('connection closed');
+      done();
+    });
+    db.closeConnection();
+  });
 });
